@@ -8,7 +8,8 @@ jobs:
     runs-on: ubuntu-latest
 
     permissions:
-      contents: write  # Needed to commit changes
+      contents: write
+      issues: read
 
     steps:
       - name: Checkout code
