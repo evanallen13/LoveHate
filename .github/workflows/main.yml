@@ -30,7 +30,7 @@ jobs:
           LOVE=$(gh issue list --label "love" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
           HATE=$(gh issue list --label "hate" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
 
-          cat <<EOF > love-hate.html
+          cat <<EOF > index.html
             <!DOCTYPE html>
             <html>
             <head>
@@ -83,6 +83,6 @@ jobs:
         run: |
           git config user.name "GitHub Actions"
           git config user.email "actions@github.com"
-          git add love-hate.html
+          git add index.html
           git commit -m "Update Love/Hate report"
           git push
