@@ -23,6 +23,8 @@ jobs:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Generate Love/Hate HTML Report
+        env:
+          GH_TOKEN: ${{ github.token }}
         run: |
           LOVE=$(gh issue list --label "love" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
           HATE=$(gh issue list --label "hate" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
