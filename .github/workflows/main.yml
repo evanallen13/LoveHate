@@ -31,53 +31,52 @@ jobs:
           HATE=$(gh issue list --label "hate" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
 
           cat <<EOF > index.html
-            <!DOCTYPE html>
-            <html>
-            <head>
-              <title>Love/Hate Issues</title>
-              <style>
-                .container {
-                  display: flex;
-                  justify-content: space-around;
-                  align-items: flex-start;
-                  gap: 40px;
-                }
-                ul {
-                  list-style-type: disc;
-                  padding-left: 20px;
-                }
-                li {
-                  margin-bottom: 8px;
-                }
-                h2 {
-                  text-align: center;
-                }
-                .section {
-                  flex: 1;
-                  min-width: 300px;
-                }
-              </style>
-            </head>
-            <body>
-              <h1>Love/Hate Issues</h1>
-              <div class="container">
-                <div class="section">
-                  <h2>Love Issues</h2>
-                  <ul>
-                    $LOVE
-                  </ul>
+              <!DOCTYPE html>
+              <html>
+              <head>
+                <title>Love/Hate Issues</title>
+                <style>
+                  .container {
+                    display: flex;
+                    justify-content: space-around;
+                    align-items: flex-start;
+                    gap: 40px;
+                  }
+                  ul {
+                    list-style-type: disc;
+                    padding-left: 20px;
+                  }
+                  li {
+                    margin-bottom: 8px;
+                  }
+                  h2 {
+                    text-align: center;
+                  }
+                  .section {
+                    flex: 1;
+                    min-width: 300px;
+                  }
+                </style>
+              </head>
+              <body>
+                <h1>Love/Hate Issues</h1>
+                <div class="container">
+                  <div class="section">
+                    <h2>Love Issues</h2>
+                    <ul>
+                      $LOVE
+                    </ul>
+                  </div>
+                  <div class="section">
+                    <h2>Hate Issues</h2>
+                    <ul>
+                      $HATE
+                    </ul>
+                  </div>
                 </div>
-                <div class="section">
-                  <h2>Hate Issues</h2>
-                  <ul>
-                    $HATE
-                  </ul>
-                </div>
-              </div>
-            </body>
-            </html>
-            EOF
-
+              </body>
+              </html>
+          EOF
 
       - name: Commit and push report
         run: |
