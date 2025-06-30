@@ -1,0 +1,85 @@
+name: Generate Love/Hate Report
+
+on:
+  workflow_dispatch:
+
+jobs:
+  generate-report:
+    runs-on: ubuntu-latest
+
+    permissions:
+      contents: write  # Needed to commit changes
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup GitHub CLI
+        run: sudo apt-get install gh -y
+
+      - name: Authenticate GitHub CLI
+        run: gh auth setup-git
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Generate Love/Hate HTML Report
+        run: |
+          LOVE=$(gh issue list --label "love" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
+          HATE=$(gh issue list --label "hate" --json number,title,url --jq '.[] | "<li><a href=\"" + .url + "\">#" + (.number|tostring) + "</a> - " + .title + "</li>"')
+
+          cat <<EOF > love-hate.html
+            <!DOCTYPE html>
+            <html>
+            <head>
+              <title>Love/Hate Issues</title>
+              <style>
+                .container {
+                  display: flex;
+                  justify-content: space-around;
+                  align-items: flex-start;
+                  gap: 40px;
+                }
+                ul {
+                  list-style-type: disc;
+                  padding-left: 20px;
+                }
+                li {
+                  margin-bottom: 8px;
+                }
+                h2 {
+                  text-align: center;
+                }
+                .section {
+                  flex: 1;
+                  min-width: 300px;
+                }
+              </style>
+            </head>
+            <body>
+              <h1>Love/Hate Issues</h1>
+              <div class="container">
+                <div class="section">
+                  <h2>Love Issues</h2>
+                  <ul>
+                    $LOVE
+                  </ul>
+                </div>
+                <div class="section">
+                  <h2>Hate Issues</h2>
+                  <ul>
+                    $HATE
+                  </ul>
+                </div>
+              </div>
+            </body>
+            </html>
+            EOF
+
+
+      - name: Commit and push report
+        run: |
+          git config user.name "GitHub Actions"
+          git config user.email "actions@github.com"
+          git add love-hate.html
+          git commit -m "Update Love/Hate report"
+          git push
