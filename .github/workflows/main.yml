@@ -36,28 +36,7 @@ jobs:
               <html>
               <head>
                 <title>Love/Hate Issues</title>
-                <style>
-                  .container {
-                    display: flex;
-                    justify-content: space-around;
-                    align-items: flex-start;
-                    gap: 40px;
-                  }
-                  ul {
-                    list-style-type: disc;
-                    padding-left: 20px;
-                  }
-                  li {
-                    margin-bottom: 8px;
-                  }
-                  h2 {
-                    text-align: center;
-                  }
-                  .section {
-                    flex: 1;
-                    min-width: 300px;
-                  }
-                </style>
+                <link rel="stylesheet" href="styles.css">
               </head>
               <body>
                 <h1>Love/Hate Issues</h1>
