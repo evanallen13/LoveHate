@@ -4,6 +4,11 @@ on:
   workflow_dispatch:
   issues:
     types: [labeled]
+
+concurrency:
+ group: ${{ github.workflow }}
+ cancel-in-progress: true
+ 
 jobs:
   generate-report:
     runs-on: ubuntu-latest
