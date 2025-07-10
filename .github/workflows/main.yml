@@ -3,8 +3,8 @@ name: Generate Love/Hate Report
 on:
   workflow_dispatch:
   issues:
-    types: [labeled]
-
+    types: [labeled, edited]
+    
 concurrency:
  group: ${{ github.workflow }}
  cancel-in-progress: true
